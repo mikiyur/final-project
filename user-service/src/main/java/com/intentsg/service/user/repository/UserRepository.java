@@ -1,0 +1,7 @@
+package com.intentsg.service.user.repository;
+
+import com.intentsg.service.user.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+}
