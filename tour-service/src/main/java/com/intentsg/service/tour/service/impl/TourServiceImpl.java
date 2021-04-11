@@ -7,8 +7,9 @@ import com.intentsg.service.tour.repository.TourRepository;
 import com.intentsg.service.tour.service.TourService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class TourServiceImpl implements TourService {
@@ -28,4 +29,9 @@ public class TourServiceImpl implements TourService {
         return modelMapper.map(tour, TourDto.class);
     }
 
+    @Override
+    public Page<Tour> getAllTour(Integer minPrice, Integer maxPrice, Pageable pageable) {
+        Page <Tour> tour = tourRepository.getAllByPrice(minPrice, maxPrice, pageable);
+        return tour;
+    }
 }

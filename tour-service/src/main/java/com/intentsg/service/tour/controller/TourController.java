@@ -8,12 +8,16 @@ import com.intentsg.service.tour.service.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -25,6 +29,7 @@ public class TourController {
     private TourService tourService;
     private DiscoveryClient discoveryClient;
     private RestTemplate restTemplate;
+    private final int PER_PAGE = 3;
 
     @Autowired
     public TourController(TourService tourService, DiscoveryClient discoveryClient, RestTemplate restTemplate) {
@@ -48,5 +53,12 @@ public class TourController {
         return new ResponseEntity<>(tourDto, HttpStatus.OK);
     }
 
-
+    @GetMapping("/")
+    public ResponseEntity<Page> getAllTours(@RequestParam(name = "minPrice", required = false) Integer minPrice,
+                                            @RequestParam(name = "maxPrice", required = false) Integer maxPrice,
+                                            @PageableDefault() Pageable pageable) {
+        System.out.println(pageable);
+        Page<Tour> page = tourService.getAllTour(minPrice, maxPrice,pageable); //todo max-minPrice default value
+        return new ResponseEntity<>(page, HttpStatus.OK);
+    }
 }
