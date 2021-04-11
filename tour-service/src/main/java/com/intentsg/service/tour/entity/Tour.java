@@ -1,15 +1,20 @@
 package com.intentsg.service.tour.entity;
 
-import lombok.Data;
+
+import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
-@Entity(name = "tours")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity(name = "tours")
 public class Tour {
 
     @Id
@@ -17,12 +22,15 @@ public class Tour {
     private Long id;
 
     @NotBlank(message = "The name cannot be empty")
-    @Size(min=1, max=100)
+    @Size(min=1, max=200)
     @Pattern(regexp = "[A-Za-z0-9 -]*")
     private String title;
 
     @Lob
+    @Type(type = "org.hibernate.type.TextType")
     private String description;
 
     private int price;
+
+    private String imageUrl;
 }

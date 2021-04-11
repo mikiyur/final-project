@@ -1,16 +1,14 @@
 package com.intentsg.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.With;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class TourDto {
 
     private Long id;
