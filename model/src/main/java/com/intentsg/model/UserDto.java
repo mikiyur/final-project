@@ -23,4 +23,5 @@ public class UserDto {
 
     private boolean isAuthenticated;
 
+    private List<UserItemDto> items;
 }

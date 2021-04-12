@@ -45,4 +45,9 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/tours/{id}")
+    public ResponseEntity<List<Long>> getToursIdByUserId(@PathVariable Long id) {
+        return new ResponseEntity<>(userService.getToursIdByUserId(id), HttpStatus.OK);
+    }
+
 }

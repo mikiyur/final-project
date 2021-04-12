@@ -11,11 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ItemDto {
-
-    private Long id;
-
-    private UserDto user;
+public class UserItemDto {
 
     private Long tourId;
 
