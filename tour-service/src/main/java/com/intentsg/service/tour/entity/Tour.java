@@ -21,16 +21,15 @@ public class Tour {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "The name cannot be empty")
+    @NotBlank(message = "The title cannot be empty")
     @Size(min=1, max=200)
-    @Pattern(regexp = "[A-Za-z0-9 -]*")
     private String title;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String description;
 
-    private int price;
+    private Integer price;
 
     private String imageUrl;
 }
