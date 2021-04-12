@@ -1,8 +1,8 @@
 package com.intentsg.service.tour.service.impl;
 
 import com.intentsg.model.TourDto;
+import com.intentsg.model.exeptions.NoSuchElementExeption;
 import com.intentsg.service.tour.entity.Tour;
-import com.intentsg.service.tour.exeption.NoSuchElementExeption;
 import com.intentsg.service.tour.repository.TourRepository;
 import com.intentsg.service.tour.service.TourService;
 import org.modelmapper.ModelMapper;

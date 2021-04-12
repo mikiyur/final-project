@@ -1,5 +1,6 @@
 package com.intentsg.service.tour.exeption;
 
+import com.intentsg.model.exeptions.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

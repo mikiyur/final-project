@@ -57,7 +57,7 @@ public class TourController {
                                             @RequestParam(name = "maxPrice", defaultValue = MAX_PRICE) Integer maxPrice,
                                             @PageableDefault(size = TOURS_PER_PAGE) Pageable pageable) {
         System.out.println(pageable);
-        Page<Tour> page = tourService.getAllTour(minPrice, maxPrice, pageable); //todo max-minPrice default value
+        Page<Tour> page = tourService.getAllTour(minPrice, maxPrice, pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
