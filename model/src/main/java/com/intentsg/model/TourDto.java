@@ -17,5 +17,7 @@ public class TourDto {
 
     private String description;
 
-    private int price;
+    private Integer price;
+
+    private String imageUrl;
 }
