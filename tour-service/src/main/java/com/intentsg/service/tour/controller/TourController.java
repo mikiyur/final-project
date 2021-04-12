@@ -13,17 +13,15 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 
 @Controller
 @RequestMapping("/tours")
 public class TourController {
-
 
     private TourService tourService;
     private DiscoveryClient discoveryClient;
@@ -62,4 +60,10 @@ public class TourController {
         Page<Tour> page = tourService.getAllTour(minPrice, maxPrice, pageable); //todo max-minPrice default value
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
+
+    @PostMapping("/save")
+    public ResponseEntity<List<TourDto>> saveTours(@RequestBody(required = false) List<TourDto> tourDtoList) {
+        return new ResponseEntity<>(tourService.saveTours(tourDtoList), HttpStatus.OK);
+    }
+
 }

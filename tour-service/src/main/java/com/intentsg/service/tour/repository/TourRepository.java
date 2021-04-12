@@ -19,4 +19,3 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
     @Query(value = "select tour from tours as tour where price between :minPrice and :maxPrice")
     Page<Tour> getAllByPrice(@Param("minPrice")int minPrice, @Param("maxPrice")int maxPrice, Pageable pageable);
 }
-//, nativeQuery = true

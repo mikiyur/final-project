@@ -11,6 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class TourServiceImpl implements TourService {
 
@@ -33,5 +36,16 @@ public class TourServiceImpl implements TourService {
     public Page<Tour> getAllTour(Integer minPrice, Integer maxPrice, Pageable pageable) {
         Page <Tour> tour = tourRepository.getAllByPrice(minPrice, maxPrice, pageable);
         return tour;
+    }
+
+    @Override
+    public List<TourDto> saveTours(List<TourDto> tourDtoList){
+        List<Tour> toursList = tourDtoList.stream()
+                .map(tourDto -> modelMapper.map(tourDto, Tour.class))
+                .collect(Collectors.toList());
+        toursList.forEach(tour -> tour.setId(null));
+        return tourRepository.saveAll(toursList).stream()
+                .map(tour -> modelMapper.map(tour, TourDto.class))
+                .collect(Collectors.toList());
     }
 }
