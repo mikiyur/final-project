@@ -1,6 +1,8 @@
 package com.intentsg.service.user.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -32,5 +34,7 @@ public class User {
     private boolean isAuthenticated;
 
     @OneToMany (cascade = CascadeType.REMOVE, mappedBy = "user")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Item> items = new ArrayList<>();
 }
