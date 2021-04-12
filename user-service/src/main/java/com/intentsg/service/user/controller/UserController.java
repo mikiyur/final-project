@@ -2,7 +2,6 @@ package com.intentsg.service.user.controller;
 
 import com.intentsg.model.ItemDto;
 import com.intentsg.model.UserDto;
-import com.intentsg.service.user.entity.Item;
 import com.intentsg.service.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -10,11 +9,7 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -56,14 +51,21 @@ public class UserController {
 
     @GetMapping("/cart/add")
     public ResponseEntity<ItemDto> addTourToCart(@RequestParam(name = "userid") Long userId,
-                                                 @RequestParam(name = "tourid") Long tourId){
-        System.out.println(userId);
-        System.out.println(tourId);
+                                                 @RequestParam(name = "tourid") Long tourId) {
         return new ResponseEntity<>(userService.addTourToCart(userId, tourId), HttpStatus.OK);
     }
 
-//addone (userid tourId)
-    //deleteone (userid tourId)
-    //deleteall (userid)
+    @GetMapping("/cart/delete")
+    public ResponseEntity<String> deleteTourFromCart(@RequestParam(name = "userid") Long userId,
+                                                     @RequestParam(name = "tourid") Long tourId) {
+        userService.deleteTourFromCart(userId, tourId);
+        return ResponseEntity.ok("Success");
+    }
+
+    @GetMapping("/cart/clean")
+    public ResponseEntity<String> cleanCart(@RequestParam(name = "userid") Long userId) {
+        userService.cleanCart(userId);
+        return ResponseEntity.ok("Success");
+    }
 
 }

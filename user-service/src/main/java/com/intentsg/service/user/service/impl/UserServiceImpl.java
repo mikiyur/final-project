@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementExeption("Tour with id: " + id + " not found in data base"));
+                .orElseThrow(() -> new NoSuchElementExeption("User with id: " + id + " not found in data base"));
         return modelMapper.map(user, UserDto.class);
     }
 
@@ -48,14 +47,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public ItemDto addTourToCart(Long userId, Long tourId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementExeption("Tour with id: " + userId + " not found in data base"));
-        if (user.getItems().stream().anyMatch(item -> item.getTourId().equals(tourId))){
+                .orElseThrow(() -> new NoSuchElementExeption("User with id: " + userId + " not found in data base"));
+        if (user.getItems().stream().anyMatch(item -> item.getTourId().equals(tourId))) {
             return null; //todo
         }
         Item item = new Item();
         item.setUser(user);
         item.setTourId(tourId);
-        System.out.println(item);
         return modelMapper.map(itemRepository.save(item), ItemDto.class);
+    }
+
+    @Override
+    public void deleteTourFromCart(Long userId, Long tourId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementExeption("User with id: " + userId + " not found in data base"));
+        Item item = user.getItems().stream().filter(item2 -> item2.getTourId().equals(tourId)).findFirst()
+                .orElseThrow(() -> new NoSuchElementExeption("Tour with id: " + tourId + " not found in data base"));
+        itemRepository.deleteById(item.getId());
+    }
+
+    @Override
+    public void cleanCart(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementExeption("User with id: " + userId + " not found in data base"));
+        itemRepository.deleteAll(user.getItems());
     }
 }
