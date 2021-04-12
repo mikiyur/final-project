@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
-
 import java.util.List;
 
 public interface TourService {
@@ -15,4 +14,6 @@ public interface TourService {
     Page<Tour> getAllTour(Integer minPrice, Integer maxPrice, Pageable pageable);
 
     List<TourDto> saveTours(List<TourDto> tourDtoList);
-    }
+
+    List<TourDto> getAllUserTours(List<Long> idTours);
+}
