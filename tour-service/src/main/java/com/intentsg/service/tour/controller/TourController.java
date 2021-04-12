@@ -24,7 +24,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/tours")
-@CrossOrigin(origins = "http://localhost:3000/")
+@CrossOrigin
 public class TourController {
 
     private TourService tourService;
