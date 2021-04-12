@@ -16,9 +16,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-@CrossOrigin
 @Controller
 @RequestMapping("/users")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class UserController {
 
     private UserService userService;

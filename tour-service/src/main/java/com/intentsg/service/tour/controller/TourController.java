@@ -21,9 +21,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-@CrossOrigin
+
 @Controller
 @RequestMapping("/tours")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class TourController {
 
     private TourService tourService;
@@ -82,3 +83,4 @@ public class TourController {
         return new ResponseEntity<>(tourService.getAllUserTours(result.getBody()), HttpStatus.OK);
     }
 }
+
