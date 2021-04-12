@@ -7,9 +7,11 @@ import com.intentsg.service.tour.service.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,7 @@ public class TourController {
     private final int TOURS_PER_PAGE = 9;
     private final String MIN_PRICE = "0";
     private final String MAX_PRICE = "99999";
+    private Object ParameterizedTypeReference;
 
     @Autowired
     public TourController(TourService tourService, DiscoveryClient discoveryClient, RestTemplate restTemplate) {
@@ -66,4 +69,13 @@ public class TourController {
         return new ResponseEntity<>(tourService.saveTours(tourDtoList), HttpStatus.OK);
     }
 
+//    @GetMapping("/userid/{id}")
+//    public ResponseEntity<List<TourDto>> getUserTours(@PathVariable Long id) {
+//        HttpEntity<Long> longHttpEntity = new HttpEntity<>(0L);
+//        List toursIds = restTemplate
+//                .postForEntity(getServiceInstance().getUri().toString() + "api/users/tours/" + id,
+//                        longHttpEntity,
+//                        new ParameterizedTypeReference<List<Long>>() {});
+//        return tourService.getAllUserTours(toursIds);
+//    }
 }

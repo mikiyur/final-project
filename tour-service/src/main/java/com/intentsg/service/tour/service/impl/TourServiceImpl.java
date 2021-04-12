@@ -48,4 +48,11 @@ public class TourServiceImpl implements TourService {
                 .map(tour -> modelMapper.map(tour, TourDto.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<TourDto> getAllUserTours(List<Long> idTours){
+        return tourRepository.findAllById(idTours).stream()
+                .map(tour -> modelMapper.map(tour, TourDto.class))
+                .collect(Collectors.toList());
+    }
 }
