@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -69,13 +70,15 @@ public class TourController {
         return new ResponseEntity<>(tourService.saveTours(tourDtoList), HttpStatus.OK);
     }
 
-//    @GetMapping("/userid/{id}")
-//    public ResponseEntity<List<TourDto>> getUserTours(@PathVariable Long id) {
-//        HttpEntity<Long> longHttpEntity = new HttpEntity<>(0L);
-//        List toursIds = restTemplate
-//                .postForEntity(getServiceInstance().getUri().toString() + "api/users/tours/" + id,
-//                        longHttpEntity,
-//                        new ParameterizedTypeReference<List<Long>>() {});
-//        return tourService.getAllUserTours(toursIds);
-//    }
+    @GetMapping("/userid/{id}")
+    public ResponseEntity<List<TourDto>> getUserTours(@PathVariable Long id) {
+        HttpEntity<Long> longHttpEntity = new HttpEntity<>(0L);
+        ResponseEntity<List<Long>> result = restTemplate.exchange(
+                getServiceInstance().getUri().toString() + "api/users/tours/" + id,
+                HttpMethod.GET,
+                longHttpEntity,
+                new ParameterizedTypeReference<List<Long>>() {
+                });
+        return new ResponseEntity<>(tourService.getAllUserTours(result.getBody()), HttpStatus.OK);
+    }
 }
