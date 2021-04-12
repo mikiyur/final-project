@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,4 +22,5 @@ public class UserDto {
     private int balance;
 
     private boolean isAuthenticated;
+
 }

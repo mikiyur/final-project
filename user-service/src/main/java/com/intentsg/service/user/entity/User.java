@@ -1,14 +1,14 @@
 package com.intentsg.service.user.entity;
 
 import lombok.Data;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity (name = "users")
 @Data
@@ -30,4 +30,7 @@ public class User {
     private int balance;
 
     private boolean isAuthenticated;
+
+    @OneToMany (cascade = CascadeType.REMOVE, mappedBy = "user")
+    private List<Item> items = new ArrayList<>();
 }
