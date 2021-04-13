@@ -2,6 +2,7 @@ package com.intentsg.service.user.controller;
 
 import com.intentsg.model.ItemDto;
 import com.intentsg.model.UserDto;
+import com.intentsg.model.UserProfile;
 import com.intentsg.service.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -68,4 +70,19 @@ public class UserController {
         return ResponseEntity.ok("Success");
     }
 
+    @PostMapping("/signup")
+    public ResponseEntity<UserDto> signUp(@Valid @RequestBody UserProfile userProfile) {
+        return new ResponseEntity<>(userService.signUp(userProfile), HttpStatus.OK);
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<UserDto> signIn(@Valid @RequestBody UserProfile userProfile) {
+        return new ResponseEntity<>(userService.signIn(userProfile), HttpStatus.OK);
+    }
+
+    @GetMapping("/signout")
+    public ResponseEntity signOut(){
+        userService.signOut();
+        return ResponseEntity.ok("success");
+    }
 }

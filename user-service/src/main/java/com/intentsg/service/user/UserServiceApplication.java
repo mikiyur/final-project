@@ -1,5 +1,6 @@
 package com.intentsg.service.user;
 
+import com.intentsg.service.user.tools.CurrentUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,4 +24,6 @@ public class UserServiceApplication {
     public ModelMapper modelMapper(){
         return new ModelMapper();
     }
+    @Bean
+    public CurrentUser currentUser() { return new CurrentUser();}
 }

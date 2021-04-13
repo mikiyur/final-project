@@ -22,7 +22,8 @@ public class User {
 
     @NotBlank(message = "The name cannot be empty")
     @Size(min=1, max=50)
-    @Pattern(regexp = "[A-Za-z -]*")
+    @Pattern(regexp = "[A-Za-zЄ-ЯҐа-їґ -]*")
+    @Column(unique = true)
     private String userName;
 
     @NotEmpty
