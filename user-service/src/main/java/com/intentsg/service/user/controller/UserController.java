@@ -81,8 +81,8 @@ public class UserController {
     }
 
     @GetMapping("/signout")
-    public ResponseEntity signOut(){
-        userService.signOut();
+    public ResponseEntity signOut(@RequestParam(name = "userid") Long userId){
+        userService.signOut(userId);
         return ResponseEntity.ok("success");
     }
 }

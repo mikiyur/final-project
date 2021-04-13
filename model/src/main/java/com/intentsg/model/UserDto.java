@@ -21,7 +21,7 @@ public class UserDto {
 
     private int balance;
 
-    private boolean isAuthenticated;
+    private String secretKey;
 
     private List<UserItemDto> items;
 }

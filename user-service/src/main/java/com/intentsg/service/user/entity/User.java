@@ -27,12 +27,14 @@ public class User {
     private String userName;
 
     @NotEmpty
-    @Size(min=6, max=32)
+    @Size(min=6, max=100)
     private String password;
 
     private int balance;
 
-    private boolean isAuthenticated;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private String secretKey;
 
     @OneToMany (cascade = CascadeType.REMOVE, mappedBy = "user")
     @EqualsAndHashCode.Exclude

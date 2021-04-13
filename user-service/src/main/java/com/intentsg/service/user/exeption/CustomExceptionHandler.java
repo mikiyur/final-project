@@ -30,7 +30,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<Object> handleNotExistException(NotExistException exception) {
         return buildExceptionBody(exception, CONFLICT);
     }
-
+    @ExceptionHandler(AlreadyExistsExeption.class)
+    public final ResponseEntity<Object> handleNotExistException(AlreadyExistsExeption exception) {
+        return buildExceptionBody(exception, CONFLICT);
+    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public final ResponseEntity<Object> handleNotExistException(AccessDeniedException exception) {
+        return buildExceptionBody(exception, FORBIDDEN);
+    }
 
     private ResponseEntity<Object> buildExceptionBody(Exception exception, HttpStatus httpStatus) {
         ExceptionResponse exceptionResponse = ExceptionResponse.builder()

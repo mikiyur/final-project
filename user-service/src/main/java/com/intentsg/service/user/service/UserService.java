@@ -3,6 +3,7 @@ package com.intentsg.service.user.service;
 import com.intentsg.model.ItemDto;
 import com.intentsg.model.UserDto;
 import com.intentsg.model.UserProfile;
+import com.intentsg.service.user.entity.User;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -23,5 +24,6 @@ public interface UserService {
 
     UserDto signIn(UserProfile userProfile);
 
-    void signOut();
+    void signOut(Long userId);
+
 }
