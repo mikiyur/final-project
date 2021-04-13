@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ItemDto addTourToCart(Long userId, Long tourId) {
+    public ItemDto addTourToCart(Long userId, Long tourId, Integer price) {
         User user = findById(userId);
         validateUser(user);
         if (user.getItems().stream().anyMatch(item -> item.getTourId().equals(tourId))) {
@@ -63,6 +64,7 @@ public class UserServiceImpl implements UserService {
         Item item = new Item();
         item.setUser(user);
         item.setTourId(tourId);
+        item.setPrice(price);
         return modelMapper.map(itemRepository.save(item), ItemDto.class);
     }
 
@@ -83,16 +85,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void buyTours(Long userId, Integer sum) {
+    public void buyTours(Long userId) {
         User user = findById(userId);
         validateUser(user);
-        if (user.getBalance()<sum) {
+        int sum = user.getItems().stream().mapToInt(Item::getPrice).sum();
+        if (user.getBalance() < sum) {
             throw new NotEnoughMoneyExeption("You don't have enough money fo doing the operation," +
                     " replenish the balance");
         }
-        user.setBalance(user.getBalance()-sum);
+        user.setBalance(user.getBalance() - sum);
+        itemRepository.deleteAll(user.getItems());
         user.getItems().clear();
         userRepository.save(user);
+
     }
 
     @Override
@@ -116,7 +121,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.
                 findUserByUserName(userProfile.getUserName())
                 .orElseThrow(() -> new WrongUserNameExeption("User with userName: " + userProfile.getUserName() + " not found"));
-        if (!encoder.matches(userProfile.getPassword(),user.getPassword())) {
+        if (!encoder.matches(userProfile.getPassword(), user.getPassword())) {
             throw new WrongPasswordExeption("Password is wrong");
         }
         User currentUser = currentUsers.addUser(user);
@@ -142,5 +147,4 @@ public class UserServiceImpl implements UserService {
                 .findById(userId)
                 .orElseThrow(() -> new NoSuchElementExeption("User with id: " + userId + " not found in data base"));
     }
-
 }

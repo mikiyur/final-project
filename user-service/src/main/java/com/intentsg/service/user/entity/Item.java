@@ -20,5 +20,7 @@ public class Item {
 
     private Long tourId;
 
+    private Integer price;
+
     private LocalDateTime registeredAt = LocalDateTime.now();
 }

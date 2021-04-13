@@ -30,3 +30,16 @@ zuul:
       path: /tours/**
       serviceId: tour-service
       stripPrefix: false
+  host:
+      connect-timeout-millis: 6000
+      socket-timeout-millis: 6000
+ribbon:
+  ReadTimeout: 6000
+  ConnectTimeout: 6000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000

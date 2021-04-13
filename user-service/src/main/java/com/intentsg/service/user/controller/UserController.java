@@ -57,8 +57,9 @@ public class UserController {
 
     @GetMapping("/cart/add")
     public ResponseEntity<ItemDto> addTourToCart(@RequestParam(name = "userid") Long userId,
-                                                 @RequestParam(name = "tourid") Long tourId) {
-        return new ResponseEntity<>(userService.addTourToCart(userId, tourId), HttpStatus.OK);
+                                                 @RequestParam(name = "tourid") Long tourId,
+                                                 @RequestParam(name = "price") Integer price) {
+        return new ResponseEntity<>(userService.addTourToCart(userId, tourId, price), HttpStatus.OK);
     }
 
     @GetMapping("/cart/delete")
@@ -76,10 +77,8 @@ public class UserController {
 
     @GetMapping("/cart/buy")
     public ResponseEntity<String> byAllToursFromCurt(
-            @RequestParam(name = "userid") Long userId,
-            @RequestParam(name = "sum") Integer sum) {
-
-        userService.buyTours(userId, sum);
+            @RequestParam(name = "userid") Long userId){
+        userService.buyTours(userId);
         return ResponseEntity.ok("Success");
     }
 

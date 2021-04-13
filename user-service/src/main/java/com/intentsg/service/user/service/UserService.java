@@ -15,7 +15,7 @@ public interface UserService {
 
     List<Long> getToursIdByUserId(Long id);
 
-    ItemDto addTourToCart(Long userId, Long tourId);
+    ItemDto addTourToCart(Long userId, Long tourId, Integer price);
 
     void deleteTourFromCart(Long userId, Long tourId);
 
@@ -27,5 +27,5 @@ public interface UserService {
 
     void signOut(Long userId);
 
-    void buyTours(Long userId, Integer sum);
+    void buyTours(Long userId);
 }
