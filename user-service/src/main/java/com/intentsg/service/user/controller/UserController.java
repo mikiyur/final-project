@@ -1,12 +1,16 @@
 package com.intentsg.service.user.controller;
 
 import com.intentsg.model.ItemDto;
+import com.intentsg.model.TourDto;
 import com.intentsg.model.UserDto;
 import com.intentsg.model.UserProfile;
 import com.intentsg.service.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -67,6 +71,15 @@ public class UserController {
     @GetMapping("/cart/clean")
     public ResponseEntity<String> cleanCart(@RequestParam(name = "userid") Long userId) {
         userService.cleanCart(userId);
+        return ResponseEntity.ok("Success");
+    }
+
+    @GetMapping("/cart/buy")
+    public ResponseEntity<String> byAllToursFromCurt(
+            @RequestParam(name = "userid") Long userId,
+            @RequestParam(name = "sum") Integer sum) {
+
+        userService.buyTours(userId, sum);
         return ResponseEntity.ok("Success");
     }
 

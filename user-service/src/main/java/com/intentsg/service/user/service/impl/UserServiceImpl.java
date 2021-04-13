@@ -14,7 +14,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Autowired
-    public UserServiceImpl( PasswordEncoder encoder, UserRepository userRepository, ModelMapper modelMapper, ItemRepository itemRepository, CurrentUsers currentUsers) {
+    public UserServiceImpl(PasswordEncoder encoder, UserRepository userRepository, ModelMapper modelMapper, ItemRepository itemRepository, CurrentUsers currentUsers) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.itemRepository = itemRepository;
@@ -46,7 +45,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Long> getToursIdByUserId(Long id) {
-        validateUser(id);
+        User user = findById(id);
+        validateUser(user);
         if (id == null) throw new NotExistException("Id can't be null");
         return itemRepository.findAllByUserId(id).stream()
                 .map(Item::getTourId)
@@ -55,8 +55,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ItemDto addTourToCart(Long userId, Long tourId) {
-        validateUser(userId);
         User user = findById(userId);
+        validateUser(user);
         if (user.getItems().stream().anyMatch(item -> item.getTourId().equals(tourId))) {
             throw new AlreadyExistsExeption("Tour with id: " + tourId + " already exists in users cart");
         }
@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteTourFromCart(Long userId, Long tourId) {
-        validateUser(userId);
         User user = findById(userId);
+        validateUser(user);
         Item item = user.getItems().stream().filter(item2 -> item2.getTourId().equals(tourId)).findFirst()
                 .orElseThrow(() -> new NoSuchElementExeption("Tour with id: " + tourId + " not found in data base"));
         itemRepository.deleteById(item.getId());
@@ -77,9 +77,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void cleanCart(Long userId) {
-        validateUser(userId);
         User user = findById(userId);
+        validateUser(user);
         itemRepository.deleteAll(user.getItems());
+    }
+
+    @Override
+    public void buyTours(Long userId, Integer sum) {
+        User user = findById(userId);
+        validateUser(user);
+        if (user.getBalance()<sum) {
+            throw new NotEnoughMoneyExeption("You don't have enough money fo doing the operation," +
+                    " replenish the balance");
+        }
+        user.setBalance(user.getBalance()-sum);
+        user.getItems().clear();
+        userRepository.save(user);
     }
 
     @Override
@@ -103,7 +116,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.
                 findUserByUserName(userProfile.getUserName())
                 .orElseThrow(() -> new WrongUserNameExeption("User with userName: " + userProfile.getUserName() + " not found"));
-        if (encoder.matches(user.getPassword(), userProfile.getPassword())) {
+        if (!encoder.matches(userProfile.getPassword(),user.getPassword())) {
             throw new WrongPasswordExeption("Password is wrong");
         }
         User currentUser = currentUsers.addUser(user);
@@ -113,17 +126,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void signOut(Long userId) {
-        validateUser(userId);
-        currentUsers.removeUser(findById(userId));
+        User user = findById(userId);
+        validateUser(user);
+        currentUsers.removeUser(user);
     }
 
-    private void validateUser(Long userId) {
-        if (!currentUsers.checkExists(findById(userId))){
+    private void validateUser(User user) {
+        if (!currentUsers.checkExists(user)) {
             throw new AccessDeniedException("Access denied, you need to log in");
         }
     }
 
-    private User findById(Long userId){
+    private User findById(Long userId) {
         return userRepository
                 .findById(userId)
                 .orElseThrow(() -> new NoSuchElementExeption("User with id: " + userId + " not found in data base"));

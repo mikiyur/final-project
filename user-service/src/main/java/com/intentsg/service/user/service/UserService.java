@@ -1,6 +1,7 @@
 package com.intentsg.service.user.service;
 
 import com.intentsg.model.ItemDto;
+import com.intentsg.model.TourDto;
 import com.intentsg.model.UserDto;
 import com.intentsg.model.UserProfile;
 import com.intentsg.service.user.entity.User;
@@ -26,4 +27,5 @@ public interface UserService {
 
     void signOut(Long userId);
 
+    void buyTours(Long userId, Integer sum);
 }

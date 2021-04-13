@@ -39,6 +39,11 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return buildExceptionBody(exception, FORBIDDEN);
     }
 
+    @ExceptionHandler(NotEnoughMoneyExeption.class)
+    public final ResponseEntity<Object> handleNotExistException(NotEnoughMoneyExeption exception) {
+        return buildExceptionBody(exception, FORBIDDEN);
+    }
+
     private ResponseEntity<Object> buildExceptionBody(Exception exception, HttpStatus httpStatus) {
         ExceptionResponse exceptionResponse = ExceptionResponse.builder()
                 .status(httpStatus.value())

@@ -42,6 +42,7 @@ public class TourController {
     }
 
     private ServiceInstance getServiceInstance() {
+
         return discoveryClient.getInstances("edge-service").get(0);
     }
 

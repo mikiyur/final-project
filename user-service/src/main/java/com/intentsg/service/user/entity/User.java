@@ -28,8 +28,10 @@ public class User {
 
     @NotEmpty
     @Size(min=6, max=100)
+    @ToString.Exclude
     private String password;
 
+    @ToString.Exclude
     private int balance;
 
     @EqualsAndHashCode.Exclude
