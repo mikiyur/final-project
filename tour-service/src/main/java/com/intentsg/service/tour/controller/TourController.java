@@ -51,7 +51,7 @@ public class TourController {
         return ResponseEntity.ok("tour-service");
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<TourDto> getTourById(@PathVariable Long id) {
         TourDto tourDto = tourService.getTourDtoById(id);
         return new ResponseEntity<>(tourDto, HttpStatus.OK);
