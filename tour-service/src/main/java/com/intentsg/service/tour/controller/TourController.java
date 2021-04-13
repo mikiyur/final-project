@@ -33,7 +33,6 @@ public class TourController {
     private final int TOURS_PER_PAGE = 9;
     private final String MIN_PRICE = "0";
     private final String MAX_PRICE = "99999";
-    private Object ParameterizedTypeReference;
 
     @Autowired
     public TourController(TourService tourService, DiscoveryClient discoveryClient, RestTemplate restTemplate) {
