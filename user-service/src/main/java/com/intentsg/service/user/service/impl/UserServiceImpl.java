@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void buyTours(Long userId) {
+    public UserDto buyTours(Long userId) {
         User user = findById(userId);
         validateUser(user);
         int sum = user.getItems().stream().mapToInt(Item::getPrice).sum();
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
         itemRepository.deleteAll(user.getItems());
         user.getItems().clear();
         userRepository.save(user);
-
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Override

@@ -14,10 +14,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.util.List;
 
 @Controller
@@ -76,24 +78,34 @@ public class UserController {
     }
 
     @GetMapping("/cart/buy")
-    public ResponseEntity<String> byAllToursFromCurt(
-            @RequestParam(name = "userid") Long userId){
-        userService.buyTours(userId);
-        return ResponseEntity.ok("Success");
+    public ResponseEntity<UserDto> byAllToursFromCurt(
+            @RequestParam(name = "userid") Long userId) {
+        return new ResponseEntity<>(userService.buyTours(userId), HttpStatus.OK);
+
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> signUp(@Valid @RequestBody UserProfile userProfile) {
+    public ResponseEntity<UserDto> signUp(@Valid @RequestBody UserProfile userProfile,
+                                          BindingResult result) {
+        if (result.hasErrors()) {
+            throw new ValidationException("user name or password don't pass validation "
+                    + result.getAllErrors());
+        }
         return new ResponseEntity<>(userService.signUp(userProfile), HttpStatus.OK);
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<UserDto> signIn(@Valid @RequestBody UserProfile userProfile) {
+    public ResponseEntity<UserDto> signIn(@Valid @RequestBody UserProfile userProfile,
+                                          BindingResult result) {
+        if (result.hasErrors()) {
+            throw new ValidationException("userName or password don't pass validation "
+                    + result.getAllErrors());
+        }
         return new ResponseEntity<>(userService.signIn(userProfile), HttpStatus.OK);
     }
 
     @GetMapping("/signout")
-    public ResponseEntity signOut(@RequestParam(name = "userid") Long userId){
+    public ResponseEntity signOut(@RequestParam(name = "userid") Long userId) {
         userService.signOut(userId);
         return ResponseEntity.ok("success");
     }

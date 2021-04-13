@@ -27,5 +27,5 @@ public interface UserService {
 
     void signOut(Long userId);
 
-    void buyTours(Long userId);
+    UserDto buyTours(Long userId);
 }
