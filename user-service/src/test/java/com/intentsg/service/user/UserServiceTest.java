@@ -6,6 +6,7 @@ import com.intentsg.model.UserProfile;
 import com.intentsg.model.exeptions.AccessDeniedException;
 import com.intentsg.model.exeptions.AlreadyExistsExeption;
 import com.intentsg.model.exeptions.NoSuchElementExeption;
+import com.intentsg.model.exeptions.WrongUserNameExeption;
 import com.intentsg.service.user.entity.Item;
 import com.intentsg.service.user.entity.User;
 import com.intentsg.service.user.repository.ItemRepository;
@@ -61,6 +62,7 @@ public class UserServiceTest {
     private static final long ITEM_5_ID = 5L;
     private static final long ITEM_50_ID = 50L;
     private static final String WALID_USERNAME = "Username";
+    private static final String WALID_USERNAME_2 = "User";
     private static final String WALID_PASSWORD = "Password";
     private static final String NOT_WALID_USERNAME = "User1";
     private static final String NOT_WALID_PASSWORD = "111";
@@ -72,6 +74,7 @@ public class UserServiceTest {
     private UserDto userDto1;
     private UserDto userDto2;
     private UserProfile walidUserProfile;
+    private UserProfile walidUserProfile2;
     private UserProfile notWalidUserProfile;
     private Item item;
     private Item newItem;
@@ -116,6 +119,13 @@ public class UserServiceTest {
         walidUserProfile = new UserProfile();
         walidUserProfile.setUserName(WALID_USERNAME);
         walidUserProfile.setPassword(WALID_PASSWORD);
+        walidUserProfile2 = new UserProfile();
+        walidUserProfile2.setUserName(WALID_USERNAME_2);
+        walidUserProfile2.setPassword(WALID_PASSWORD);
+
+        notWalidUserProfile = new UserProfile();
+        notWalidUserProfile.setUserName(NOT_WALID_USERNAME);
+        notWalidUserProfile.setPassword(NOT_WALID_PASSWORD);
         item = new Item();
         item.setId(ITEM_5_ID);
         item.setTourId(ITEM_5_ID);
@@ -141,6 +151,10 @@ public class UserServiceTest {
         when(currentUsers.checkExists(user1)).thenReturn(true);
         when(encoder.encode(WALID_PASSWORD)).thenReturn(WALID_PASSWORD);
         when(modelMapper.map(walidUserProfile, User.class)).thenReturn(user1);
+        when(currentUsers.addUser(user1)).thenReturn(user1);
+        when(userRepository.save(user1)).thenReturn(user1);
+        when(encoder.matches(WALID_PASSWORD, WALID_PASSWORD)).thenReturn(true);
+        when(currentUsers.addUser(user1)).thenReturn(user1);
     }
 
     @Test
@@ -199,11 +213,37 @@ public class UserServiceTest {
         assertThat(userService.buyTours(USER_1_ID));
     }
 
-//    @Test
-//    public void signUpTest(){
-//        UserDto actualUserDto = userService.signUp(walidUserProfile);
-//        System.out.println(actualUserDto);
-//        assertThat(actualUserDto.getId().equals(userDto1.getId()));
-//    }
+    @Test
+    public void signUpTest(){
+        when(userRepository.findUserByUserName(WALID_USERNAME)).thenReturn(Optional.empty());
+        UserDto actualUserDto = userService.signUp(walidUserProfile);
+        assertThat(actualUserDto.getId().equals(userDto1.getId()));
+    }
+
+    @Test
+    public void signUpExceptionTest(){
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> {
+            userService.signUp(walidUserProfile2);
+        });
+    }
+
+    @Test
+    public void signInTest(){
+        when(userRepository.findUserByUserName(WALID_USERNAME)).thenReturn(Optional.of(user1));
+        UserDto actualUserDto = userService.signIn(walidUserProfile);
+        assertThat(actualUserDto.getId().equals(userDto1.getId()));
+    }
+
+    @Test
+    public void signInExceptionTest(){
+        assertThatExceptionOfType(WrongUserNameExeption.class).isThrownBy(() -> {
+            userService.signIn(notWalidUserProfile);
+        });
+    }
+
+    @Test
+    public void signOutTest(){
+        assertThat(userService.signOut(USER_1_ID));
+    }
 
 }
