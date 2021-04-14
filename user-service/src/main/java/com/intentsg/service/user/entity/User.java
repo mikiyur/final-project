@@ -1,9 +1,6 @@
 package com.intentsg.service.user.entity;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -15,7 +12,6 @@ import java.util.List;
 
 @Entity (name = "users")
 @Data
-@Builder
 public class User {
 
     @Id

@@ -17,15 +17,15 @@ public interface UserService {
 
     ItemDto addTourToCart(Long userId, Long tourId, Integer price);
 
-    void deleteTourFromCart(Long userId, Long tourId);
+    boolean deleteTourFromCart(Long userId, Long tourId);
 
-    void cleanCart(Long userId);
+    boolean cleanCart(Long userId);
 
     UserDto signUp(UserProfile userProfile);
 
     UserDto signIn(UserProfile userProfile);
 
-    void signOut(Long userId);
+    boolean signOut(Long userId);
 
     UserDto buyTours(Long userId);
 }

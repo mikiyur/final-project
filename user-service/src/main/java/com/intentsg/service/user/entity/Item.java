@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity(name = "items")
 @Data
+@EqualsAndHashCode
 public class Item {
 
     @Id
@@ -16,11 +17,15 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @EqualsAndHashCode.Exclude
     private User user;
 
+    @EqualsAndHashCode.Exclude
     private Long tourId;
 
+    @EqualsAndHashCode.Exclude
     private Integer price;
 
+    @EqualsAndHashCode.Exclude
     private LocalDateTime registeredAt = LocalDateTime.now();
 }

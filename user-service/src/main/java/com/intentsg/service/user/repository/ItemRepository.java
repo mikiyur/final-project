@@ -11,10 +11,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findAllByUserId(Long id);
 
-//    @Query(value = "delete from items where user_id = :userId and tour_id = :tourId")
-//    void deleteItem(@Param("userId") Long userId, @Param("tourId") Long tourId);
-//
-//    @Query(value = "delete from items as item where item.user_id = :userId", nativeQuery = true)
-//    void removeItemsByUserId(@Param("userId") Long userId);
 }
 

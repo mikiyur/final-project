@@ -69,19 +69,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteTourFromCart(Long userId, Long tourId) {
+    public boolean deleteTourFromCart(Long userId, Long tourId) {
         User user = findById(userId);
         validateUser(user);
         Item item = user.getItems().stream().filter(item2 -> item2.getTourId().equals(tourId)).findFirst()
                 .orElseThrow(() -> new NoSuchElementExeption("Tour with id: " + tourId + " not found in data base"));
         itemRepository.deleteById(item.getId());
+        return true;
     }
 
     @Override
-    public void cleanCart(Long userId) {
+    public boolean cleanCart(Long userId) {
         User user = findById(userId);
         validateUser(user);
         itemRepository.deleteAll(user.getItems());
+        return true;
     }
 
     @Override
@@ -130,10 +132,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void signOut(Long userId) {
+    public boolean signOut(Long userId) {
         User user = findById(userId);
         validateUser(user);
         currentUsers.removeUser(user);
+        return true;
     }
 
     private void validateUser(User user) {
