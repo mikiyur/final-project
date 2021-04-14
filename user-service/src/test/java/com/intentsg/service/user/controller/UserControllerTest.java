@@ -1,7 +1,6 @@
 package com.intentsg.service.user.controller;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,8 +22,6 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-
-
     @Test
     void getUserById() throws  Exception {
         mockMvc.perform(get("/users/11")).andDo(print()).andExpect(status().isOk());
@@ -36,30 +33,51 @@ class UserControllerTest {
     }
 
     @Test
-    void addTourToCart() {
+    void addTourToCart() throws  Exception {
+        mockMvc.perform(get("/users/cart/add?userid=11&tourid=2&price=983"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
-    void deleteTourFromCart() {
+    void deleteTourFromCart() throws  Exception {
+        mockMvc.perform(get("/users/cart/delete?userid=11&tourid=2"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
-    void cleanCart() {
+    void cleanCart() throws  Exception {
+        mockMvc.perform(get("/users/cart/clean?userid=11"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
-    void byAllToursFromCurt() {
+    void byAllToursFromCurt() throws  Exception {
+        mockMvc.perform(get("/users/cart/buy?userid=11"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
-    void signUp() {
+    void signUp() throws  Exception {
+        mockMvc.perform(post("/users/signup")
+                .content("{\"userName\": \"YURIYYY\",\"password\": \"11111\"}")
+                .contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk());
     }
 
     @Test
-    void signIn() {
+    void signIn() throws  Exception {
+        mockMvc.perform(post("/users/signin")
+                .content("{\"userName\": \"admin\",\"password\": \"admin\"}")
+                .contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk());
     }
 
     @Test
-    void signOut() {
+    void signOut() throws  Exception {
+        mockMvc.perform(get("/users/signout?userid=11"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }
