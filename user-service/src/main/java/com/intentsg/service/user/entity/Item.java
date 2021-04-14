@@ -1,6 +1,6 @@
 package com.intentsg.service.user.entity;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

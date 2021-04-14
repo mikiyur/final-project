@@ -82,5 +82,6 @@ public class TourController {
                 });
         return new ResponseEntity<>(tourService.getAllUserTours(result.getBody()), HttpStatus.OK);
     }
+
 }
 

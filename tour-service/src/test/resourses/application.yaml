@@ -1,0 +1,13 @@
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://final.cstca4ldtbgb.us-east-2.rds.amazonaws.com:5432/tour-service-test
+    username: postgres
+    password: rootroot
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: always
